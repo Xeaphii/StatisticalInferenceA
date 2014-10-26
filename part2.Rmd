@@ -1,0 +1,39 @@
+---
+output: pdf_document
+---
+#Statistical Inference Assessment Part 2
+   
+##Question 1
+I loaded the ToothGrowth data and perform some basic exploratory data analyses, 
+```{r,fig.height=3}
+library(lattice)
+data(ToothGrowth)
+xyplot(len~dose|supp,data=ToothGrowth,layout=c(2,1))
+```
+
+##Question 2
+A basic summary of the data,
+```{r}
+str(ToothGrowth)
+```
+   
+##Question 3
+Firstly I tested the hypothesis that response of the length of odontoblasts (teeth) in each of 10 guinea pigs is high in case of "VC" as compared to "OJ"
+```{r}
+#First Hyp., that "VC" has good impact rather than OJ
+t.test(ToothGrowth[ToothGrowth$supp=="OJ",]$len-ToothGrowth[ToothGrowth$supp=="VC",]$len)
+
+```
+then, I tested the hypothesis that response of the length of odontoblasts (teeth) in each of 10 guinea pigs is high as dose increases. So firstly I tested dose 0.5 with 1, later I tested dose 1 with 2,
+
+```{r}
+#Secon Hyp., that increased dose has good impact.
+comp1<-subset(ToothGrowth,dose%in%c(0.5,1))
+t.test(len~supp,data=comp1,paired = T)
+
+comp2<-subset(ToothGrowth,dose%in%c(1,2))
+t.test(len~supp,data=comp2,paired = T)
+```
+   
+##Question 4
+By looking at the above results, it seems that the response of the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) is highly correlated. Higher the dose is, higher is the response of the length of teeths. But that response is quite independent of delivery methods (orange juice or ascorbic acid).
